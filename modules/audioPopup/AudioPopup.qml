@@ -19,20 +19,17 @@ Scope {
         target: Pipewire.defaultAudioSink?.audio
 
         function onVolumeChanged() {
-            root.audioPopupVisible = true
+            panel.isVisible = true
             hideTimer.restart();
         }
     }
 
-    Timer {
-        id: hideTimer
+    Timer { id: hideTimer
         interval: 1000
-        // onTriggered: root.audioPopupVisible = false
+        onTriggered: panel.isVisible = false
     }
 
-    PanelWindow {
-        id: panel
-
+    PanelWindow { id: panel
         exclusiveZone: 0
         exclusionMode: ExclusionMode.Ignore
         aboveWindows: true
@@ -40,74 +37,78 @@ Scope {
         mask: Region {}
 
         anchors {
-            right: true
+            left: true
         }
 
-        implicitHeight: 416 / 2
+        property bool isVisible: false
+        margins.left: isVisible ? 1920 - 64 - width : 1920 - 64
+
+        Behavior on margins.left {
+            NumberAnimation {
+                duration: 150
+                easing.type: Easing.OutCubic
+            }
+        }
+
         implicitWidth: 48
+        implicitHeight: 416 / 2
 
         color: "#00000000"
 
-        Rectangle {
-            // add blur
-            id: bg
-
+        Rectangle { id: bg
             anchors.fill: parent
-            color: "#0b0a0f"
+
             topLeftRadius: parent.width
             bottomLeftRadius: parent.width
 
-            Column {
-                id: c
+            color: "#0b0a0f"
+            // add blur
+        }
 
-                spacing: (parent.height - outputSlider.height - inputSlider.height) / 3
+        Slider { id: outputSlider
+            anchors {
+                left: parent.left
+                verticalCenter: parent.verticalCenter
+                leftMargin: (parent.width - width) / 2
+            }
 
-                anchors {
-                    left: parent.left
-                    verticalCenter: parent.verticalCenter
-                    leftMargin: (parent.width - width) / 2
+            from: 0
+            to: 100
+            value: Math.round((Pipewire.defaultAudioSink?.audio.volume ?? 0) * 100)
+
+            orientation: Qt.Vertical
+
+            width: 12
+            height: 150
+
+            background: Rectangle {
+                implicitWidth: parent.availableWidth
+                implicitHeight: parent.availableHeight
+                radius: width
+                color: "#bdbebf"
+
+                Rectangle {
+                    width: parent.width
+                    height: (1 - parent.parent.visualPosition) * parent.height
+                    x: parent.x
+                    y: parent.height * parent.parent.visualPosition
+                    radius: width
+                    color: "#33ccff"
                 }
+            }
 
-                Slider {
-                    id: outputSlider
+            handle: Rectangle {
+                x: parent.availableWidth / 2 - width / 2
+                y: parent.visualPosition * (parent.availableHeight - height)
+                implicitWidth: parent.availableWidth
+                implicitHeight: parent.availableHeight / 4
+                radius: width
+                color: "#5d5e5f"
 
-                    from: 0
-                    to: 100
-                    value: Math.round((Pipewire.defaultAudioSink?.audio.volume ?? 0) * 100)
-
-                    orientation: Qt.Vertical
-
-                    width: 12
-                    height: 150
-
-                    background: Rectangle {
-                        implicitWidth: parent.availableWidth
-                        implicitHeight: parent.availableHeight
-                        radius: width
-                        color: "#bdbebf"
-
-                        Rectangle {
-                            width: parent.width
-                            height: parent.visualPosition * parent.height
-                            color: "#21be2b"
-                            radius: 2
-                        }
-                    }
-
-                    handle: Rectangle {
-                        x: parent.availableWidth / 2 - width / 2
-                        y: parent.visualPosition * (parent.availableHeight - height)
-                        implicitWidth: parent.availableWidth
-                        implicitHeight: parent.availableHeight / 4
-                        radius: width
-                        color: parent.pressed ? "#f0f0f0" : "#f6f6f6"
-
-                        Behavior on y {
-                            NumberAnimation {
-                                duration: 150 // Adjust duration for desired smoothness (in milliseconds)
-                                easing.type: Easing.OutCubic // Choose an easing curve for a natural feel
-                            }
-                        }
+                Behavior on y {
+                    NumberAnimation {
+                        duration: 150
+                        easing.type: Easing.OutCubic
                     }
                 }
             }
