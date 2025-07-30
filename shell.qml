@@ -1,15 +1,17 @@
 import Quickshell
 import QtQuick
 import "./modules/audioPopup"
+import "./modules/hyprbar"
 
 ShellRoot {
     id: root
 
-    property bool audioPopupVisible: true
     Loader {
-        id: audioLoader
-
-        active: audioPopupVisible
+        active: false
+        sourceComponent: Hyprbar {}
+    }
+    Loader {
+        active: true
         sourceComponent: AudioPopup {}
     }
 }

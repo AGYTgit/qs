@@ -30,7 +30,6 @@ Scope {
     }
 
     PanelWindow { id: panel
-        exclusiveZone: 0
         exclusionMode: ExclusionMode.Ignore
         aboveWindows: true
         focusable: false
@@ -41,7 +40,7 @@ Scope {
         }
 
         property bool isVisible: false
-        margins.left: isVisible ? 1920 - 64 - width : 1920 - 64
+        margins.left: isVisible ? 1920 - width : 1920
 
         Behavior on margins.left {
             NumberAnimation {
@@ -50,8 +49,8 @@ Scope {
             }
         }
 
-        implicitWidth: 48
-        implicitHeight: 416 / 2
+        width: 48
+        height: 416 / 2
 
         color: "#00000000"
 
