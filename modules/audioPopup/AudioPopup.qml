@@ -49,8 +49,8 @@ Scope {
             }
         }
 
-        width: 48
-        height: 416 / 2
+        implicitWidth: 48
+        implicitHeight: 416 / 2
 
         color: "#00000000"
 

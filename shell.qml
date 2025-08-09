@@ -1,13 +1,13 @@
 import Quickshell
 import QtQuick
-import "./modules/audioPopup"
-import "./modules/hyprbar"
+import qs.modules.audioPopup
+import qs.modules.hyprbar
 
 ShellRoot {
     id: root
 
     Loader {
-        active: false
+        active: true
         sourceComponent: Hyprbar {}
     }
     Loader {

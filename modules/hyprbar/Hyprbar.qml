@@ -6,59 +6,103 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Shapes
+import qs.modules.hyprbar.widgets
+import qs.modules.clock
+import qs.modules.battery
+import qs.types
 
-Scope {
-    PanelWindow { id: statusBar
-        anchors {
-            left: true
-            bottom: true
-            top: true
-        }
+PanelWindow { id: statusBar
+    exclusionMode: ExclusionMode.Exclusive
+    aboveWindows: true
+    focusable: false
 
-        implicitWidth: 64
+    anchors {
+        left: true
+        bottom: true
+        top: true
+    }
 
-        color: "#00000000"
+    implicitWidth: 64
 
-        Rectangle { id: bg
+    color: "#00000000"
+
+    Rectangle { id: bg
+        anchors.fill: parent
+
+        color: "#0b0a0f"
+
+        ColumnLayout { id: content
             anchors.fill: parent
+            ColumnLayout { id: topGroup
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                spacing: 0
 
-            color: "#0b0a0f"
+                ItemIcon {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: 10
 
-            Column {
-                anchors.fill: parent
-                Item { id: logoWrapper
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    y: x / 2
-                    implicitWidth: 24
-                    implicitHeight: implicitWidth
-
-                    Image { id: logo
-                        source: "../../assets/arch.svg"
-                        anchors.fill: parent
-                    }
+                    iconWidth: 24
+                    source: "../assets/arch.svg"
                 }
-                Item { id: logoWrapper2
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    y: x / 2
-                    implicitWidth: 24
-                    implicitHeight: implicitWidth
-
-                    Image { id: logo2
-                        source: "../../assets/arch.svg"
-                        anchors.fill: parent
-                    }
+                Workspaces {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: 15
                 }
+            }
 
-                Row { id: workspaces
-                    Column { id: workspacesMain
-                    }
-                    Column { id: workspacesSecond
-                    }
+            Item {
+                Layout.fillHeight: true
+            }
+
+            ColumnLayout { id: bottomGroup
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+
+                Battery {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.bottomMargin: 6
+
+                    text: capacity
+                    capacityActive: true
+                    color: "#DDDDDD"
                 }
 
-                Item { id: time
+                Rectangle {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.bottomMargin: 6
+
+                    width: 24
+                    height: 2
+                    color: "#666666"
                 }
-                Item { id: date
+
+                Clock { id: time
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.bottomMargin: 6
+
+                    format: "hh\nmm"
+                    use12HourCycle: true
+                    interval: 60000
+                    font.pixelSize: 20
+                    color: "#DDDDDD"
+                }
+
+                Rectangle {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.bottomMargin: 6
+
+                    width: 24
+                    height: 2
+                    color: "#666666"
+                }
+
+                Clock { id: date
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.bottomMargin: 12
+
+                    format: "dd\nMM"
+                    interval: 60000
+                    font.pixelSize: 20
+                    color: "#DDDDDD"
                 }
             }
         }
