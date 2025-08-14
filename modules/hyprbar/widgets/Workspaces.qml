@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
 
 Row { id: workspaces
     spacing: 8
@@ -22,7 +23,7 @@ Row { id: workspaces
 
                 source: {
                     // "../../../assets/workspaces/c/c" + "<window-count>" + ".svg"
-                    "../../../assets/workspaces/c/c" + 1 + ".svg"
+                    "../../../assets/workspaces/c/c" + 0 + ".svg"
                 }
                 width: 12
                 height: width
@@ -43,7 +44,7 @@ Row { id: workspaces
 
                 source: {
                     // "../../../assets/workspaces/c/c" + "<window-count>" + ".svg"
-                    "../../../assets/workspaces/c/c" + 1 + ".svg"
+                    "../../../assets/workspaces/c/c" + 0 + ".svg"
                 }
                 width: 12
                 height: width
